@@ -2,19 +2,16 @@ import { useEffect, useState } from 'react'
 import { Prefecture, fetchPrefectures } from './api/prefectureApi'
 import './App.css'
 import { fetchPopulations } from './api/populationApi'
+import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts'
 
-interface GraphValues {
-  totalPopulation: GraphValue[];
-  youngPopulation: GraphValue[];
-  workingAgePopulation: GraphValue[];
-  elderlyPopulation: GraphValue[];
-}
+type PrefKeys = `pref${number}`;
 
-interface GraphValue {
-  prefCode: number;
+interface GraphPointsPerXAxis {
   x: string;
-  y: string;
+  [key: PrefKeys]: number;
 }
+
+const testData: GraphPointsPerXAxis[] = [{x: 'A', pref1: 400, pref2: 100}, {x: 'B', pref1: 500, pref2: 200}, {x: 'C', pref1: 300, pref2: 400}];
 
 function addGraph(prefCode: number) {
   fetchPopulations(prefCode)
@@ -29,7 +26,6 @@ function addGraph(prefCode: number) {
 
 function App() {
   const [checkboxPrefectures, setCheckboxPrefectures] = useState<Prefecture[]>([]);
-  const [graphValues, setGraphValues] = useState<GraphValues>();
 
   useEffect(() => {
     fetchPrefectures()
@@ -59,6 +55,15 @@ function App() {
             {pref.prefName}
           </label>
         ))}
+      </div>
+      <div>
+        <LineChart width={600} height={300} data={testData}>
+          <Line type="monotone" dataKey="pref1" stroke="#8884d8" />
+          <Line type="monotone" dataKey="pref2" stroke="#8884d8" />
+          <CartesianGrid stroke="#ccc" />
+          <XAxis dataKey="x" />
+          <YAxis />
+        </LineChart>
       </div>
     </div>
   )
