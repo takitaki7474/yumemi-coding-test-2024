@@ -1,11 +1,11 @@
 const apiKey: string = import.meta.env.VITE_X_API_KEY ?? "";
 
-interface PrefectureResponse {
+export interface PrefectureResponse {
   message: string;
   result: Prefecture[];
 }
   
-interface Prefecture {
+export interface Prefecture {
   prefCode: number;
   prefName: string;
 }
