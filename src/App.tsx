@@ -26,6 +26,7 @@ function addGraph(prefCode: number) {
 
 function App() {
   const [checkboxPrefectures, setCheckboxPrefectures] = useState<Prefecture[]>([]);
+  const [populationClassification, setPopulationClassification] = useState<string>("総人口");
 
   useEffect(() => {
     fetchPrefectures()
@@ -39,6 +40,16 @@ function App() {
 
   return (
     <div>
+      <div>
+        <label htmlFor="dropdown">Choose an option:</label>
+        <select id="dropdown" value={populationClassification} onChange={(event) => setPopulationClassification(event.target.value)}>
+          <option value="総人口">総人口</option>
+          <option value="年少人口">年少人口</option>
+          <option value="生産年齢人口">生産年齢人口</option>
+          <option value="老年人口">老年人口</option>
+        </select>
+        <p>Selected Value: {populationClassification}</p>
+      </div>
       <h3>Prefectures</h3>
       <div className='prefecture-checkboxes'>
         {checkboxPrefectures.map((pref) => (
