@@ -10,7 +10,7 @@ export interface Prefecture {
   prefName: string;
 }
 
-const fetchPrefecturesPromise = async (): Promise<PrefectureResponse> => {
+export const fetchPrefecturesPromise = async (): Promise<PrefectureResponse> => {
     const response = await fetch(
         "https://yumemi-frontend-engineer-codecheck-api.vercel.app/api/v1/prefectures",
         {
@@ -24,14 +24,3 @@ const fetchPrefecturesPromise = async (): Promise<PrefectureResponse> => {
     const prefectureResponse: PrefectureResponse = await response.json();
     return prefectureResponse;
 };
-
-export const fetchPrefectures = (): Prefecture[] => {
-  fetchPrefecturesPromise()
-    .then(data => {
-      return data.result;
-    })
-    .catch(err => {
-      console.log(err);
-    })
-    return [];
-}

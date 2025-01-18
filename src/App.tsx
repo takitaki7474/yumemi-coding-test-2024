@@ -1,5 +1,5 @@
 import { useEffect, useState} from 'react'
-import { Prefecture, fetchPrefectures } from './api/prefectureApi'
+import { Prefecture, fetchPrefecturesPromise } from './api/prefectureApi'
 import './App.css'
 import { PopulationGraph } from './PopulationGraph'
 
@@ -9,7 +9,13 @@ function App() {
   const [checkedPrefeCodes, setCheckedPrefCodes] = useState<number[]>([]);
 
   useEffect(() => {
-    setPrefCheckboxes(fetchPrefectures());
+    fetchPrefecturesPromise()
+      .then(data => {
+        setPrefCheckboxes(data.result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }, []);
 
   return (
