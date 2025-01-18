@@ -1,27 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState} from 'react'
 import { Prefecture, fetchPrefectures } from './api/prefectureApi'
 import './App.css'
-import { fetchPopulations, PopulationCompositionPerYearDataWithLabel } from './api/populationApi'
-import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts'
-
-type PrefKeys = `pref${number}`;
-
-interface GraphPoints {
-  x: string;
-  [key: PrefKeys]: number;
-}
-
-interface GraphDataWithPopulationCalssification {
-  populationClassification: string;
-  data: GraphDataWithPrefCode[];
-}
-
-interface GraphDataWithPrefCode {
-  prefCode: number;
-  dataByPrefCode: PopulationCompositionPerYearDataWithLabel[]; 
-}
-
-const testData: GraphPoints[] = [{x: 'A', pref1: 400, pref2: 100}, {x: 'B', pref1: 500, pref2: 200}, {x: 'C', pref1: 300, pref2: 400}];
+import { fetchPopulations } from './api/populationApi'
+import { PopulationGraph } from './PopulationGraph'
 
 function addGraph(prefCode: number) {
   fetchPopulations(prefCode)
@@ -77,15 +58,10 @@ function App() {
           </label>
         ))}
       </div>
-      <div>
-        <LineChart width={600} height={300} data={testData}>
-          <Line type="monotone" dataKey="pref1" stroke="#8884d8" />
-          <Line type="monotone" dataKey="pref2" stroke="#8884d8" />
-          <CartesianGrid stroke="#ccc" />
-          <XAxis dataKey="x" />
-          <YAxis />
-        </LineChart>
-      </div>
+      <PopulationGraph 
+        prefCodes={[1,2,3]}
+        label={"総人口"}
+      />
     </div>
   )
 }

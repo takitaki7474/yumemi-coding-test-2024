@@ -10,7 +10,7 @@ interface PopulationCompositionPerYear {
     data: PopulationCompositionPerYearDataWithLabel[]
 }
 
-export interface PopulationCompositionPerYearDataWithLabel {
+interface PopulationCompositionPerYearDataWithLabel {
     label: string;
     data: PopulationCompositionPerYearData[]
 }
