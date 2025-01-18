@@ -1,6 +1,6 @@
 const apiKey: string = import.meta.env.VITE_X_API_KEY ?? "";
 
-export interface PrefectureResponse {
+interface PrefectureResponse {
   message: string;
   result: Prefecture[];
 }
@@ -10,7 +10,7 @@ export interface Prefecture {
   prefName: string;
 }
 
-export const fetchPrefectures = async (): Promise<PrefectureResponse> => {
+const fetchPrefecturesPromise = async (): Promise<PrefectureResponse> => {
     const response = await fetch(
         "https://yumemi-frontend-engineer-codecheck-api.vercel.app/api/v1/prefectures",
         {
@@ -25,3 +25,13 @@ export const fetchPrefectures = async (): Promise<PrefectureResponse> => {
     return prefectureResponse;
 };
 
+export const fetchPrefectures = (): Prefecture[] => {
+  fetchPrefecturesPromise()
+    .then(data => {
+      return data.result;
+    })
+    .catch(err => {
+      console.log(err);
+    })
+    return [];
+}
