@@ -16,13 +16,14 @@ function addGraph(prefCode: number) {
 }
 
 function App() {
-  const [checkboxPrefectures, setCheckboxPrefectures] = useState<Prefecture[]>([]);
-  const [populationClassification, setPopulationClassification] = useState<string>("総人口");
+  const [prefCheckboxes, setPrefCheckboxes] = useState<Prefecture[]>([]);
+  const [checkedPopulationClass, setCheckedPopulationClass] = useState<string>("総人口");
+  const [checkedPrefeCodes, setCheckedPrefCodes] = useState<number[]>([]);
 
   useEffect(() => {
     fetchPrefectures()
       .then(data => {
-        setCheckboxPrefectures(data.result);
+        setPrefCheckboxes(data.result);
       })
       .catch(err => {
         console.log(err);
@@ -32,25 +33,25 @@ function App() {
   return (
     <div>
       <div>
-        <label htmlFor="dropdown">Choose an population classification:</label>
-        <select id="dropdown" value={populationClassification} onChange={(event) => setPopulationClassification(event.target.value)}>
+        <label htmlFor="dropdown">Choose an population classification: </label>
+        <select id="dropdown" value={checkedPopulationClass} onChange={(event) => setCheckedPopulationClass(event.target.value)}>
           <option value="総人口">総人口</option>
           <option value="年少人口">年少人口</option>
           <option value="生産年齢人口">生産年齢人口</option>
           <option value="老年人口">老年人口</option>
         </select>
-        <p>Selected Value: {populationClassification}</p>
       </div>
-      <h3>Prefectures</h3>
       <div className='prefecture-checkboxes'>
-        {checkboxPrefectures.map((pref) => (
+        {prefCheckboxes.map((pref) => (
           <label>
             <input
               type="checkbox"
               value={pref.prefCode}
               onChange={({target}) => {
                 if (target.checked) {
-                  addGraph(pref.prefCode);
+                  setCheckedPrefCodes((v) => [...v, pref.prefCode]);
+                } else {
+                  setCheckedPrefCodes((v) => v.filter((item) => item !== pref.prefCode));
                 }
               }}
             />
@@ -59,8 +60,8 @@ function App() {
         ))}
       </div>
       <PopulationGraph 
-        prefCodes={[1,2,3]}
-        label={"総人口"}
+        prefCodes={checkedPrefeCodes}
+        label={checkedPopulationClass}
       />
     </div>
   )

@@ -17,6 +17,7 @@ export const PopulationGraph: React.FC<PopulationGraphProps> = ({
     prefCodes,
     label,
   }) => {
+    console.log("draw graph");
     console.log(prefCodes);
     console.log(label);
     const testData: GraphPoints[] = [{x: 'A', pref1: 400, pref2: 100}, {x: 'B', pref1: 500, pref2: 200}, {x: 'C', pref1: 300, pref2: 400}];
