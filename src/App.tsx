@@ -1,17 +1,27 @@
 import { useEffect, useState } from 'react'
 import { Prefecture, fetchPrefectures } from './api/prefectureApi'
 import './App.css'
-import { fetchPopulations } from './api/populationApi'
+import { fetchPopulations, PopulationCompositionPerYearDataWithLabel } from './api/populationApi'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 type PrefKeys = `pref${number}`;
 
-interface GraphPointsPerXAxis {
+interface GraphPoints {
   x: string;
   [key: PrefKeys]: number;
 }
 
-const testData: GraphPointsPerXAxis[] = [{x: 'A', pref1: 400, pref2: 100}, {x: 'B', pref1: 500, pref2: 200}, {x: 'C', pref1: 300, pref2: 400}];
+interface GraphDataWithPopulationCalssification {
+  populationClassification: string;
+  data: GraphDataWithPrefCode[];
+}
+
+interface GraphDataWithPrefCode {
+  prefCode: number;
+  dataByPrefCode: PopulationCompositionPerYearDataWithLabel[]; 
+}
+
+const testData: GraphPoints[] = [{x: 'A', pref1: 400, pref2: 100}, {x: 'B', pref1: 500, pref2: 200}, {x: 'C', pref1: 300, pref2: 400}];
 
 function addGraph(prefCode: number) {
   fetchPopulations(prefCode)
@@ -41,7 +51,7 @@ function App() {
   return (
     <div>
       <div>
-        <label htmlFor="dropdown">Choose an option:</label>
+        <label htmlFor="dropdown">Choose an population classification:</label>
         <select id="dropdown" value={populationClassification} onChange={(event) => setPopulationClassification(event.target.value)}>
           <option value="総人口">総人口</option>
           <option value="年少人口">年少人口</option>
