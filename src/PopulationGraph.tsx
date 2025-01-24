@@ -1,6 +1,6 @@
 import React from "react";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
-import { fetchPopulationComposition } from "./api/populationApi";
+import { fetchPopulationCompositionsWithCache, PopulationCompositionResponse } from "./api/populationApi";
 
 type PrefKeys = `pref${number}`;
 
@@ -18,7 +18,14 @@ export const PopulationGraph: React.FC<PopulationGraphProps> = ({
     prefCodes,
     label,
   }) => {
-    fetchPopulationComposition(prefCodes);
+    fetchPopulationCompositionsWithCache(prefCodes)
+        .then((data: Map<number, PopulationCompositionResponse>[]) => {
+            console.log("fetch successfully");
+            console.log(data);
+        })
+        .catch(err => {
+            console.log(err);
+        });
     console.log(prefCodes);
     console.log(label);
     const testData: GraphPoints[] = [{x: 'A', pref1: 400, pref2: 100}, {x: 'B', pref1: 500, pref2: 200}, {x: 'C', pref1: 300, pref2: 400}];
